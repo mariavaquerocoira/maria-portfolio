@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
@@ -34,6 +34,13 @@ function mp4PosterUrl(src) {
 
 /** Renders an <img> with a fade-in-on-load animation. */
 function GridImage({ src, alt, ratio }) {
+  const [loaded, setLoaded] = useState(false);
+  const imgRef = useRef(null);
+
+  useEffect(() => {
+    if (imgRef.current?.complete) setLoaded(true);
+  }, []);
+
   return (
     <Box
       className="media-wrap"
@@ -59,6 +66,7 @@ function GridImage({ src, alt, ratio }) {
       }}
     >
       <Box
+        ref={imgRef}
         component="img"
         src={src}
         alt={alt}
@@ -66,12 +74,10 @@ function GridImage({ src, alt, ratio }) {
           width: '100%',
           height: 'auto',
           display: 'block',
-          opacity: 0,
+          opacity: loaded ? 1 : 0,
           transition: 'opacity 0.3s ease',
-          // Loaded state is toggled by the onLoad handler below
-          '&.loaded': { opacity: 1 },
         }}
-        onLoad={(e) => e.currentTarget.classList.add('loaded')}
+        onLoad={() => setLoaded(true)}
       />
     </Box>
   );
