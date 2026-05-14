@@ -211,7 +211,7 @@ export default function Lightbox({ projects, activeIndex, onClose }) {
   useEffect(() => {
     if (activeIndex >= 0) {
       setDisplayIndex(activeIndex);
-      setIsMuted(false);
+      setIsMuted(projects[activeIndex]?.sound !== true);
       setMediaVisible(false);
       setCaptionVisible(false);
 
@@ -250,7 +250,7 @@ export default function Lightbox({ projects, activeIndex, onClose }) {
 
       setTimeout(() => {
         setDisplayIndex(wrapped);
-        setIsMuted(false);
+        setIsMuted(projects[wrapped]?.sound !== true);
         setMediaVisible(true);
         setTimeout(() => setCaptionVisible(true), CAPTION_DELAY_MS);
       }, MEDIA_FADE_MS + 10);
